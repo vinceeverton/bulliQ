@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.services.checkout_engine import best_checkout
+from services.checkout_engine import best_checkout
 
 router = APIRouter()
 
