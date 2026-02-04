@@ -1,20 +1,25 @@
-import json
+CHECKOUTS = {
+    170: ["T20", "T20", "BULL"],
+    167: ["T20", "T19", "BULL"],
+    164: ["T20", "T18", "BULL"],
+    161: ["T20", "T17", "BULL"],
+    40: ["D20"],
+    32: ["D16"],
+    24: ["D12"],
+    16: ["D8"],
+    8: ["D4"],
+    2: ["D1"],
+}
 
-with open("app/data/checkout_table.json") as f:
-    CHECKOUTS = json.load(f)
 
-def best_checkout(remaining, double_stats):
-    routes = CHECKOUTS.get(str(remaining), [])
-    ranked = []
+def best_checkout(remaining: int, double_stats: dict):
+    if remaining in CHECKOUTS:
+        return CHECKOUTS[remaining]
 
-    for route in routes:
-        prob = 1.0
-        for dart in route:
-            if dart.startswith("D"):
-                prob *= double_stats.get(dart, 0.3)
-            else:
-                prob *= 0.85
-        ranked.append((route, prob))
+    # fallback logic
+    for d in sorted(double_stats, key=double_stats.get, reverse=True):
+        value = int(d.replace("D", "")) * 2
+        if remaining - value >= 0:
+            return [d]
 
-    ranked.sort(key=lambda x: x[1], reverse=True)
-    return ranked[0][0] if ranked else []
+    return ["No checkout"]
