@@ -2,10 +2,15 @@ import cv2
 
 cap = cv2.VideoCapture(0)
 
+if not cap.isOpened():
+    raise RuntimeError("Camera not found")
+
 while True:
     ret, frame = cap.read()
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    cv2.imshow("BullIQ Camera", gray)
+    if not ret:
+        break
+
+    cv2.imshow("BullIQ Camera", frame)
 
     if cv2.waitKey(1) & 0xFF == ord("q"):
         break
