@@ -1,0 +1,18 @@
+version: "3.9"
+
+services:
+  api:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: bulliq
+      POSTGRES_USER: bulliq
+      POSTGRES_PASSWORD: bulliq
+    ports:
+      - "5432:5432"
