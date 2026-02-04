@@ -87,7 +87,7 @@ bulliq/
 ## 🚀 Installation
 
 ### 1️⃣ Clone the repo
-```bash
+bash
 git clone https://github.com/yourusername/bulliq.git
 cd bulliq
 
