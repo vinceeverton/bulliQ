@@ -1,3 +1,5 @@
+import sys
+print(sys.path)
 from fastapi import FastAPI
 from routes import router
 
