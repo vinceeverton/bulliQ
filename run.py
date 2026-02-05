@@ -17,13 +17,21 @@ def get_camera():
 camera = get_camera()
 
 def camera_stream(): 
+last_gray = None
+hit_point = None
+freeze_until = 0
+
+if last_gray is None:
+    last_gray = gray
+    continue
     while True:
         success, frame = camera.read()
         if not success:
             print("Camera frame not ready") 
             time.sleep(0.1)
             continue
-            
+gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+gray = cv2.GaussianBlur(gray, (21, 21), 0)
         ret, buffer = cv2.imencode(".jpg", frame)
         if not ret:
             print("Encoding failed")
@@ -33,15 +41,6 @@ def camera_stream():
         # Correctly formatted multipart response
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
-        last_gray = None
-hit_point = None
-freeze_until = 0
-gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-gray = cv2.GaussianBlur(gray, (21, 21), 0)
-
-if last_gray is None:
-    last_gray = gray
-    continue
 
 frame_delta = cv2.absdiff(last_gray, gray)
 thresh = cv2.threshold(frame_delta, 25, 255, cv2.THRESH_BINARY)[1]
