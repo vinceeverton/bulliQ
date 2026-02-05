@@ -1,7 +1,10 @@
 import cv2
+import json
 import psutil
 import time
-from flask import Flask, Response, render_template_string
+import numpy as np
+from math import atan2, degrees, hypot
+from flask import Flask, Response, render_template, Response, request
 
 app = Flask(__name__)
 
@@ -30,6 +33,71 @@ def camera_stream():
         # Correctly formatted multipart response
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+        last_gray = None
+hit_point = None
+freeze_until = 0
+gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+gray = cv2.GaussianBlur(gray, (21, 21), 0)
+
+if last_gray is None:
+    last_gray = gray
+    continue
+
+frame_delta = cv2.absdiff(last_gray, gray)
+thresh = cv2.threshold(frame_delta, 25, 255, cv2.THRESH_BINARY)[1]
+thresh = cv2.dilate(thresh, None, iterations=2)
+
+cnts, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+for c in cnts:
+    if cv2.contourArea(c) < 500:
+        continue
+
+    (x, y, w, h) = cv2.boundingRect(c)
+    hit_point = (x + w // 2, y + h // 2)
+    freeze_until = time.time() + 1.0
+
+last_gray = gray
+
+BOARD = [20,1,18,4,13,6,10,15,2,17,3,19,7,16,8,11,14,9,12,5]
+# -------------------------  score calculation -------------------------
+
+def score_dart(x, y, calib):
+    cx, cy = calib["center"]
+    r = hypot(x - cx, y - cy)
+    angle = (degrees(atan2(cy - y, x - cx)) + 360 + 90) % 360
+    segment = BOARD[int(angle // 18)]
+
+    if r < calib["bull"]:
+        return 50
+    elif r < calib["outer_bull"]:
+        return 25
+    elif calib["triple_inner"] < r < calib["triple_outer"]:
+        return segment * 3
+    elif calib["double_inner"] < r < calib["double_outer"]:
+        return segment * 2
+    else:
+        return segment
+
+calibration = {
+    "center": None,
+    "bull": 12,
+    "outer_bull": 25,
+    "triple_inner": 120,
+    "triple_outer": 140,
+    "double_inner": 190,
+    "double_outer": 210
+}
+
+def save_calibration():
+    with open("calibration.json", "w") as f:
+        json.dump(calibration, f)
+try:
+    with open("calibration.json") as f:
+        calibration.update(json.load(f))
+except:
+    pass
+
 
 # ------------------------- Health function -------------------------
 def get_health():
@@ -69,6 +137,13 @@ def index():
 def camera_feed(): 
     return Response(camera_stream(),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
+
+@app.route("/calibrate", methods=["POST"])
+def calibrate():
+    data = request.json
+    calibration["center"] = (data["x"], data["y"])
+    save_calibration()
+    return {"status": "saved"}
 
 @app.route("/health")
 def health_route(): 
