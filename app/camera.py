@@ -1,4 +1,3 @@
-# /home/shadow/bulliQ/app/camera.py
 import cv2
 from flask import Blueprint, Response
 from .calibration import calibration
