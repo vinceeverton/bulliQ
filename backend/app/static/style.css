@@ -1,0 +1,32 @@
+body {
+  background: #111;
+  color: #fff;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  padding-top: 40px;
+}
+
+h1 {
+  font-size: 3em;
+}
+
+.panel {
+  margin: 30px;
+}
+
+input {
+  font-size: 1.5em;
+  padding: 10px;
+  width: 220px;
+}
+
+button {
+  font-size: 1.5em;
+  padding: 10px 20px;
+  margin-left: 10px;
+}
+
+#result {
+  margin-top: 40px;
+  font-size: 2em;
+}
