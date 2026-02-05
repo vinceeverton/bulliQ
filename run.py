@@ -34,7 +34,7 @@ def camera_stream():
 # ---- FLIP THE FRAME ----
 # frame = cv2.flip(frame, 1)  # horizontally
 # frame = cv2.flip(frame, 0)  # vertically
- frame = cv2.flip(frame, -1) # both
+ frame = cv2.flip(frame, -1) 
 
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         gray = cv2.GaussianBlur(gray, (21, 21), 0)
