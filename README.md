@@ -45,4 +45,21 @@ BullIQ is designed to:
 You can start practicing today and grow this into a serious product.
 
 Good darts 🎯	
+
+_
+installation on Raspberry Pi
+** for documentation purposes im using a 3A+ **
+
+clone git repo
+
+cd into repo 
+
+create venv and activate
+
+install requirements.txt
+
+run python run.py
+
+visit http://raspberrypi.local:7000 
+
 —
