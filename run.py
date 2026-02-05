@@ -9,7 +9,18 @@ from flask import Flask, Response, render_template_string, Response, request
 app = Flask(__name__)
 
 # ------------------------- Camera Setup -------------------------
+camera = None
+
+def get_camera():
+    global camera
+    camera = cv2.VideoCapture(0)
+    time.sleep(3)
+    return camera
+
+get_camera()  # initialize camera
+
 def camera_stream():
+    global camera  # <-- make sure we use the global variable
     last_gray = None
     hit_point = None
     freeze_until = 0
