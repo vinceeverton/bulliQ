@@ -49,9 +49,9 @@ def index():
     health = get_health()
     html = """
     <html> 
-    <head><title>BulliQ Dashboard</title></head>
+    <head><title>BulliQ</title></head>
     <body>
-        <h1>BulliQ Pi Dashboard</h1> 
+        <h1>BulliQ</h1> 
         <h2>System Health</h2>
         <ul>
             <li>CPU Usage: {{ cpu }}%</li> 
