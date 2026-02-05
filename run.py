@@ -4,7 +4,7 @@ import psutil
 import time
 import numpy as np
 from math import atan2, degrees, hypot
-from flask import Flask, Response, render_template, Response, request
+from flask import Flask, Response, render_template_string, Response, request
 
 app = Flask(__name__)
 
@@ -124,7 +124,7 @@ def index():
     </body>
     </html>
     """
-    return render_template(html, cpu=health['cpu'], ram=health['ram'], temp=health['temp'])
+    return render_template_string(html, cpu=health['cpu'], ram=health['ram'], temp=health['temp'])
 
 @app.route("/camera_feed")
 def camera_feed(): 
