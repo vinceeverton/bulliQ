@@ -9,54 +9,48 @@ from flask import Flask, Response, render_template, Response, request
 app = Flask(__name__)
 
 # ------------------------- Camera Setup -------------------------
-def get_camera():
-    camera = cv2.VideoCapture(0) 
-    time.sleep(3)  # Allow camera to initialize
-    return camera
+def camera_stream():
+    last_gray = None
+    hit_point = None
+    freeze_until = 0
 
-camera = get_camera()
-
-def camera_stream(): 
-last_gray = None
-hit_point = None
-freeze_until = 0
-
-if last_gray is None:
-    last_gray = gray
-    continue
     while True:
         success, frame = camera.read()
         if not success:
             print("Camera frame not ready") 
             time.sleep(0.1)
             continue
-gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-gray = cv2.GaussianBlur(gray, (21, 21), 0)
+
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        gray = cv2.GaussianBlur(gray, (21, 21), 0)
+
+        if last_gray is None:
+            last_gray = gray
+        else:
+            frame_delta = cv2.absdiff(last_gray, gray)
+            thresh = cv2.threshold(frame_delta, 25, 255, cv2.THRESH_BINARY)[1]
+            thresh = cv2.dilate(thresh, None, iterations=2)
+            cnts, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+            for c in cnts:
+                if cv2.contourArea(c) < 500:
+                    continue
+                x, y, w, h = cv2.boundingRect(c)
+                hit_point = (x + w//2, y + h//2)
+                freeze_until = time.time() + 1.0
+
+        last_gray = gray
+
+        # Draw hit point
+        if hit_point:
+            cv2.circle(frame, hit_point, 10, (0, 0, 255), -1)
+
         ret, buffer = cv2.imencode(".jpg", frame)
-        if not ret:
-            print("Encoding failed")
-            continue 
-            
-        frame_bytes = buffer.tobytes() 
-        # Correctly formatted multipart response
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+        if ret:
+            frame_bytes = buffer.tobytes()
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
 
-frame_delta = cv2.absdiff(last_gray, gray)
-thresh = cv2.threshold(frame_delta, 25, 255, cv2.THRESH_BINARY)[1]
-thresh = cv2.dilate(thresh, None, iterations=2)
-
-cnts, _ = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
-
-for c in cnts:
-    if cv2.contourArea(c) < 500:
-        continue
-
-    (x, y, w, h) = cv2.boundingRect(c)
-    hit_point = (x + w // 2, y + h // 2)
-    freeze_until = time.time() + 1.0
-
-last_gray = gray
 
 BOARD = [20,1,18,4,13,6,10,15,2,17,3,19,7,16,8,11,14,9,12,5]
 # -------------------------  score calculation -------------------------
