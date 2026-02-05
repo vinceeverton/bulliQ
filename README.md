@@ -1,4 +1,4 @@
-# BullIQ 🎯  
+# BulliQ 🎯  
 **A darts performance, training, and checkout-intelligence platform**
 
 BullIQ is a DartCounter-adjacent system designed to help darts players **win more legs**, not just record scores.
