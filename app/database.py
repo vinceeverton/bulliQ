@@ -1,11 +1,23 @@
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+# dashbboard
+import flask import Blueprint, jsonify
 
-DATABASE_URL = "sqlite:///bulliq.db"
+dashboard_bp = Blueprint("dashboard", __name__)
 
-engine = create_engine(
-    DATABASE_URL,
-    connect_args={"check_same_thread": False}
-)
-
-SessionLocal = sessionmaker(bind=engine)
+@dashboard_bp.route("/dashboard")
+def dashboard():
+    cpu = psutil.cpu_percent()
+    ram = psutil.virtual_memory().percent
+    disk = psutil.disk_usage('/').percent
+    try:
+        with open("/sys/class/thermal/thermal_zone0/temp") as f:
+            temp = int(f.read()) / 1000
+    except:
+        temp = 0
+        
+    data = {
+        "cpu": cpu,
+        "ram": ram,
+        "disk": disk,
+        "temp": temp
+    }
+    return jsonify(data)
