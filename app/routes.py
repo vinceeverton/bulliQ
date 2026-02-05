@@ -1,7 +1,14 @@
-from flask import Blueprint, render_template
+from flask import Flask
+from flask import Blueprint, Response, render_template
+from app.camera import camera_stream  # function from camera.py
 
-main_bp = Blueprint("main", __name__)
+main = Blueprint('main', __name__)
 
-@main_bp.route("/")
+@main.route("/")
 def index():
     return render_template("index.html")
+
+@main.route("/camera_feed")
+def camera_feed():
+    return Response(camera_stream(),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
