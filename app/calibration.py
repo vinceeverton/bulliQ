@@ -7,9 +7,9 @@ calibration = {
     "center": None,
     "bull": 12,
     "outer_bull": 25,
-    "triple_inner": 120
-    "triple_outer": 140
-    "double_inner": 190
+    "triple_inner": 120,
+    "triple_outer": 140,
+    "double_inner": 190,
     "double_outer": 210
 
 }

@@ -1,4 +1,4 @@
-from flask import flask Blueprint
+from flask import  Blueprint
 import psutil
 
 dashboard_bp = Blueprint("dashboard", __name__)
