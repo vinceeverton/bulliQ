@@ -1,14 +1,7 @@
-from fastapi import APIRouter
-from services.checkout_engine import best_checkout
-from services.stats_engine import get_double_stats
+from flask import Blueprint, render_template
 
-router = APIRouter(prefix="/api")
+main = Blueprint("main", __name__)
 
-@router.get("/checkout/{remaining}")
-def checkout(remaining: int):
-    stats = get_double_stats()
-    route = best_checkout(remaining, stats)
-    return {
-        "remaining": remaining,
-        "route": route
-    }
+@main.route("/")
+def index():
+    return render_template("index.html")
