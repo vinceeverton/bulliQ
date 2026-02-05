@@ -124,7 +124,7 @@ def index():
     </body>
     </html>
     """
-    return render_template_string(html, cpu=health['cpu'], ram=health['ram'], temp=health['temp'])
+    return render_template(html, cpu=health['cpu'], ram=health['ram'], temp=health['temp'])
 
 @app.route("/camera_feed")
 def camera_feed(): 
