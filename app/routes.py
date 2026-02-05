@@ -2,7 +2,7 @@ from flask import Flask
 from flask import Blueprint, Response, render_template
 from app.camera import camera_stream  # function from camera.py
 
-main = Blueprint('main', __name__)
+main = Blueprint("main", __name__)
 
 @main.route("/")
 def index():
