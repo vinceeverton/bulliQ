@@ -1,7 +1,7 @@
 from flask import Flask
-
+import os 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder='templates', static_folder='static')
 
     # Instead of blueprints, import routes directly
     from .routes import main
