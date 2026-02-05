@@ -1,6 +1,6 @@
- fastapi
+fastapi
 uvicorn
+jinja2
 sqlalchemy
-pydantic
 numpy
 opencv-python-headless
