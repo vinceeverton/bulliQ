@@ -8,6 +8,6 @@ async function getCheckout(score) {
 
         overlay.innerText = data.checkout ?? "No checkout";
     } catch (e) {
-        console.error(e);
+        console.error("Error fetching checkout:", e);
     }
 }
