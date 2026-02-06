@@ -28,15 +28,16 @@
 <section class="camera">
     <h2>Camera Feed</h2>
 
-    <div class="camera-wrapper">
-        <img id="cameraFeed"
-             src="{{ url_for('camera.video_feed') }}"
-             width="640"
-             height="480"/>
+ <div class="camera-wrapper">
+    <img id="cameraFeed"
+         src="{{ url_for('camera.video_feed') }}"
+         width="640"
+         height="480"/>
 
-        <div id="checkoutOverlay" class="checkoutOverlay" style="display: none;">
+    <!-- Properly closed div -->
+    <div id="checkoutOverlay" class="checkoutOverlay" style="display: none;"></div>
+</div>
 
-    </div>
 </section>
     </main>
     <script src="{{ url_for('static', filename='app.js') }}"></script>
