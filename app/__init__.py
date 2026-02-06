@@ -15,7 +15,7 @@ def create_app():
 
     app.register_blueprint(routes_bp) 
     app.register_blueprint(camera_bp)
-    #app.register_blueprint(calib_bp)
+    app.register_blueprint(calib_bp)
     #app.register_blueprint(dashboard_bp)
 
     return app
