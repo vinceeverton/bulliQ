@@ -5,8 +5,14 @@ async function getCheckout() {
   const res = await fetch(`/api/checkout/${remaining}`);
   const data = await res.json();
 
-  document.getElementById("result").innerText =
-    data.route.join(" → ");
+  const resultEl = document.getElementById("result");
+
+if (data.route && Array.isArray(data.route)) {
+    resultEl.innerText = data.route.join(" → ");
+} else if (data.checkout) {
+    resultEl.innerText = data.checkout;
+} else {
+    resultEl.innerText = "";
 }
 document.addEventListener("DOMContentLoaded", () => {
     const btn = document.getElementById("calibrateBtn");
@@ -51,3 +57,4 @@ setInterval(() => {
     const score = testScores[Math.floor(Math.random() * testScores.length)];
     updateCheckout(score);
 }, 3000);
+}
