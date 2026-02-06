@@ -20,7 +20,6 @@ app.mount("/static", StaticFiles(directory=os.path.join(CURRENT_DIR, "static")),
 templates = Jinja2Templates(directory=os.path.join(CURRENT_DIR, "templates"))
 
 # Include Routers
-app.include_router(api_router)
 app.include_router(camera_router)
 app.include_router(calib_router)
 app.include_router(checkout_router)
