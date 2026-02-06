@@ -24,13 +24,20 @@
     <h2>Calibration</h2>
     <button id="calibrateBtn">Calibrate Camera</button> 
    </section>
-   
+
 <section class="camera">
     <h2>Camera Feed</h2>
 
-    <div class="video-wrapper">
-        <img id="videoFeed" src="{{ url_for('camera.video_feed') }}" />
-        <div id="checkoutOverlay" class="checkout-overlay">-</div>
+    <div class="camera-wrapper">
+        <img id="cameraFeed"
+             src="{{ url_for('camera.video_feed') }}"
+             width="640"
+             height="480"/>
+
+        <div id="overlay">
+            <div id="checkoutOverlay">Checkout: —</div>
+            <div id="scoreOverlay">Score: 501</div>
+        </div>
     </div>
 </section>
 

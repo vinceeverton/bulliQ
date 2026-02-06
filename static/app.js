@@ -31,30 +31,27 @@ document.addEventListener("DOMContentLoaded", () => {
         alert(result.status);
     };
 });
-function updateCheckout(score) {
-    fetch(`/api/checkout/${score}`)
-        .then(res => res.json())
-        .then(data => {
-            const overlay = document.getElementById("checkoutOverlay");
-            if (!overlay) return;
+async function getCheckout(score) {
+    try {
+        const res = await fetch(`/api/checkout/${score}`);
+        const data = await res.json();
 
-if (data.route && Array.isArray(data.route)) {
-    checkoutOverlay.innerText = data.route.join(" → ");
-} else if (data.checkout) {
-    checkoutOverlay.innerText = data.checkout;
-} else {
-    checkoutOverlay.innerText = "—";
-}
-        })
-        .catch(() => {
+        const checkoutEl = document.getElementById("checkoutOverlay");
+        const scoreEl = document.getElementById("scoreOverlay");
+
+        scoreEl.innerText = `Score: ${score}`;
+
+        if (data.route && Array.isArray(data.route)) {
+            checkoutEl.innerText = "Checkout: " + data.route.join(" → ");
+        } else if (data.checkout) {
+            checkoutEl.innerText = "Checkout: " + data.checkout;
+        } else {
+            checkoutEl.innerText = "Checkout: —";
+        }
+    } catch (e) {
+        document.getElementById("checkoutOverlay").innerText = "Checkout: Error";
+    }
+  } catch(e) {
             document.getElementById("checkoutOverlay").innerText = "Error";
-        });
+        };
       }
-
-// TEMP TEST — replace later with real score detection
-setInterval(() => {
-    const testScores = [170, 121, 100, 60, 40, 32];
-    const score = testScores[Math.floor(Math.random() * testScores.length)];
-    updateCheckout(score);
-}, 3000);
-}
