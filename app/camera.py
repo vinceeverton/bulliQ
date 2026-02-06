@@ -20,6 +20,7 @@ def get_camera():
 
 def camera_stream():
     global camera
+    frame = cv2.flip(frame, -1)
     if camera is None:
         camera = get_camera()
     if camera is None:
