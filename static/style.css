@@ -87,11 +87,6 @@ section {
     border-radius: 6px;
 }
 
-#checkoutOverlay {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
 .scoreOverlay {
     color: #ffffff;
 }

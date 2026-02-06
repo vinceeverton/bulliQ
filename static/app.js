@@ -1,28 +1,33 @@
 async function getCheckout(score) {
-    try {
-        const res = await fetch(`/api/checkout/${score}`);
+    const cleanScore = Math.floor(Number(score));
+    if (isNaN(cleanScore) || cleanScore < 2) return;
 
-        // 1. Check if the response was successful (status 200-299)
+    const overlay = document.getElementById("checkoutOverlay");
+    if (!overlay) {
+        console.error("Could not find checkoutOverlay in the HTML!");
+        return;
+    }
+
+    try {
+        // Use the absolute path starting with /api
+        const res = await fetch(`/api/checkout/${cleanScore}`);
+        
         if (!res.ok) {
-            const errorText = await res.text(); // Read the error page/text
-            console.error(`Server error (${res.status}):`, errorText);
+            console.error(`API Error: ${res.status}`);
             return;
         }
 
-        // 2. Safely parse JSON
         const data = await res.json();
 
-        const overlay = document.getElementById("checkoutOverlay");
-        if (!overlay) return;
-
-        overlay.innerText = data.checkout ?? "No checkout";
-        overlay.style.display = "block";
-
-        setTimeout(() => {
-            overlay.style.display = "none";
-        }, 5000);
-    } catch (error) {
-        // This will now only catch network issues or JSON syntax errors
-        console.error("Error fetching checkout:", error);
+        if (data.checkout) {
+            // Join the array: ["T20", "D20"] -> "T20 - D20"
+            overlay.innerText = Array.isArray(data.checkout) ? data.checkout.join(" - ") : data.checkout;
+            overlay.style.display = "block";
+            
+            // Keeps it on screen for 5 seconds
+            setTimeout(() => { overlay.style.display = "none"; }, 5000);
+        }
+    } catch (err) {
+        console.error("Fetch failed:", err);
     }
 }
