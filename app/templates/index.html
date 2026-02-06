@@ -1,38 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>BullIQ</title>
-  <link rel="stylesheet" href="/static/style.css">
+    <meta charset="UTF-8">
+    <title>BulliQ Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-  <h1>🎯 BullIQ</h1>
+    <header>
+        <h1>BulliQ Dart Tracker</h1>
+    </header>
 
-<<img src="{{ url_for('camera.video_feed') }}" width="640" height="480">
-  <p id="status">Click bull center</p>
+    <main>
+        <section class="stats">
+            <h2>System Health</h2>
+            <ul>
+                <li>CPU Usage: {{ cpu }}%</li>
+                <li>RAM Usage: {{ ram }}%</li>
+                <li>Temp: {{ temp }} °C</li>
+            </ul>
+        </section>
 
-  <div class="panel">
-    <input type="number" id="remaining" placeholder="Remaining score">
-    <button onclick="getCheckout()">Checkout</button>
-  </div>
-  <div id="result"></div>
+        <section class="camera">
+            <h2>Camera Feed</h2>
+            <img src="{{ url_for('camera.camera_stream') }}" width="640" height="480"/>
+        </section>
+    </main>
 
-  <script src="/static/app.js"></script>
-  <script>
-    let step = 0;
-    document.getElementById("video").addEventListener("click", function(e){
-      const rect = this.getBoundingClientRect();
-      const x = Math.round(e.clientX - rect.left);
-      const y = Math.round(e.clientY - rect.top);
-
-      fetch("/calibrate", {
-        method:"POST",
-        headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({x, y})
-      });
-      step++;
-      document.getElementById("status").innerText =
-        step === 1 ? "Click a point on the double ring" : "Calibration saved";
-    });
-  </script>
 </body>
 </html>

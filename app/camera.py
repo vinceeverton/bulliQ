@@ -35,6 +35,8 @@ def camera_stream():
             if not success:
                 time.sleep(0.1)
                 continue
+            frame = cv2.flip(frame, -1)
+            
             ret, buffer = cv2.imencode(".jpg", frame)
             frame_bytes = buffer.tobytes()
             yield (b'--frame\r\n'
