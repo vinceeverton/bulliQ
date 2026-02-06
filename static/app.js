@@ -7,7 +7,9 @@ async function getCheckout(score) {
         if (!overlay) return;
 
         overlay.innerText = data.checkout ?? "No checkout";
-    } catch (e) {
-        console.error("Error fetching checkout:", e);
-    }
+        overlay.style.display = "block";
+
+        setTimeout(() => {
+            overlay.style.display = "none";
+        }, 5000);
 }
