@@ -5,15 +5,14 @@ from fastapi import FastAPI, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-# Note the absolute imports
+# Absolute imports
 from app.services.api import router as api_router
 from app.services.camera import router as camera_router
-from app.services.calibration import calib_bp as calib_router
-# from app.services.routes import router as routes_router 
+from app.services.calibration import router as calib_router # Verified as 'router' in calibration.py
 
 app = FastAPI()
 
-# Pathing: Since main.py is in /app, static is in ./static
+# Pathing setup
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
 app.mount("/static", StaticFiles(directory=os.path.join(CURRENT_DIR, "static")), name="static")
 templates = Jinja2Templates(directory=os.path.join(CURRENT_DIR, "templates"))
@@ -29,12 +28,14 @@ async def index(request: Request):
     try:
         with open("/sys/class/thermal/thermal_zone0/temp", "r") as f:
             temp = round(int(f.read()) / 1000, 1)
-    except: pass
+    except: 
+        pass
 
     health = {
         "cpu": psutil.cpu_percent(),
         "ram": psutil.virtual_memory().percent,
         "temp": temp
     }
+    
+    # CRITICAL: This return statement connects your data to the HTML
     return templates.TemplateResponse("index.html", {"request": request, **health})
-

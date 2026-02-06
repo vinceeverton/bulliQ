@@ -1,19 +1,23 @@
-from flask import Blueprint, request, jsonify
+# app/services/calibration.py
+from fastapi import APIRouter, Request, HTTPException
 import json
 import os
 
-calib_bp = Blueprint('calibration', __name__)
-
+# Change Blueprint to APIRouter
+router = APIRouter() 
 CALIB_FILE = "calibration.json"
 
-@calib_bp.route('/calibrate', methods=['POST'])
-def calibrate():
-    data = request.get_json()
+@router.post('/calibrate')
+async def calibrate(request: Request):
+    try:
+        data = await request.get_json() # FastAPI way to get JSON
+    except:
+        data = await request.json()
 
     if not data:
-        return jsonify({"error": "No data"}), 400
+        raise HTTPException(status_code=400, detail="No data")
 
     with open(CALIB_FILE, "w") as f:
         json.dump(data, f)
 
-    return jsonify({"status": "calibration saved"})
+    return {"status": "calibration saved"}
