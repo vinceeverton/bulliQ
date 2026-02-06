@@ -1,6 +1,4 @@
-
 from flask import Blueprint, jsonify
-
 api_bp = Blueprint('api', __name__)
 
 # Simple, real checkout table (will expand later)

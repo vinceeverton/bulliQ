@@ -1,5 +1,7 @@
 from flask import Flask
 from .api import api_bp
+from .checkout_engine import checkout_bp
+
 def create_app():
     app = Flask(
         __name__,
@@ -17,6 +19,8 @@ def create_app():
     app.register_blueprint(camera_bp)
     app.register_blueprint(calib_bp)
     app.register_blueprint(api_bp)
+    app.register_blueprint(checkout_bp)
     #app.register_blueprint(dashboard_bp)
+    
 
     return app
