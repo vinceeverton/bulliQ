@@ -12,4 +12,7 @@ async function getCheckout(score) {
         setTimeout(() => {
             overlay.style.display = "none";
         }, 5000);
-}
+    } catch (err) {
+        console.error("Error fetching checkout:", err);
+    }
+} 

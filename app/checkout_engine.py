@@ -2,7 +2,7 @@ from flask import Blueprint, jsonify
 
 checkout_bp = Blueprint('checkout', __name__)
 
-@checkout_bp.route('/api/checkout/<int:score>')
+@checkout_bp.route('/app/checkout_engine/<int:score>')
 def checkout(score):
     # TEMP real logic placeholder
     if score > 170 or score < 2:
