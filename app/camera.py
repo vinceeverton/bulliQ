@@ -5,7 +5,7 @@ from flask import Blueprint, Response
 
 camera_bp = Blueprint('camera', __name__)
 
-camera = None  # global camera object
+camera = 0  # global camera object
 
 def get_camera():
     """Try to open camera 5 times"""
