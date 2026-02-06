@@ -14,4 +14,6 @@ def create_app():
     app.register_blueprint(calib_bp, url_prefix='/calibration')
     app.register_blueprint(dashboard_bp, url_prefix='/dashboard')
 
+    from .  import routes 
+
     return app
