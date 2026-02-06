@@ -10,7 +10,7 @@ def create_app():
     from .calibration import calib_bp
     from .dashboard import dashboard_bp
 
-    app.register_blueprint(routes)
+    app.register_blueprint(routes.main_bp) 
     app.register_blueprint(camera_bp, url_prefix='/camera')
     app.register_blueprint(calib_bp, url_prefix='/calibration')
     app.register_blueprint(dashboard_bp, url_prefix='/dashboard')
