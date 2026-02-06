@@ -30,6 +30,7 @@ function updateCheckout(score) {
         .then(res => res.json())
         .then(data => {
             const overlay = document.getElementById("checkoutOverlay");
+            if (!overlay) return;
 
             if (data.checkout) {
                 overlay.innerText = `Checkout: ${data.checkout.join(" → ")}`;
