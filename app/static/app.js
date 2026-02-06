@@ -1,23 +1,19 @@
-document.addEventListener('DOMContentLoaded', () => {
+window.onload = () => {
+    console.log("BulliQ Script Active");
     const calibrateBtn = document.getElementById('calibrateBtn');
     const checkoutBtn = document.getElementById('checkoutBtn');
     const scoreInput = document.getElementById('scoreInput');
 
-    // 1. Checkout Button Logic
     if (checkoutBtn) {
-        checkoutBtn.addEventListener('click', () => {
+        checkoutBtn.onclick = () => {
             const score = scoreInput.value;
-            if (score) {
-                getCheckout(score);
-            } else {
-                alert("Please enter a score first!");
-            }
-        });
+            console.log("Requesting checkout for:", score);
+            if (score) getCheckout(score);
+        };
     }
-
-    // 2. Calibration Button Logic
+    
     if (calibrateBtn) {
-        calibrateBtn.addEventListener('click', async () => {
+        calibrateBtn.onclick = async () => {
             console.log("Sending calibration request...");
             try {
                 const response = await fetch('/calibrate', {
@@ -30,13 +26,13 @@ document.addEventListener('DOMContentLoaded', () => {
             } catch (err) {
                 console.error("Calibration failed:", err);
             }
-        });
+        };
     }
-});
+}; // This brace now correctly closes the window.onload function
 
 async function getCheckout(score) {
     const overlay = document.getElementById("checkoutOverlay");
-    console.log("Checking score:", score); // Log to browser console
+    console.log("Checking score:", score); 
 
     try {
         const res = await fetch(`/api/checkout/${score}`);
@@ -52,6 +48,8 @@ async function getCheckout(score) {
             setTimeout(() => {
                 overlay.style.display = "none";
             }, 5000);
+        } else {
+            console.log("No checkout for score:", score);
         }
     } catch (err) {
         console.error("Fetch error:", err);
