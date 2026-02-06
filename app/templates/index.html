@@ -21,8 +21,12 @@
         </section>
 
         <section class="camera">
-            <h2>Camera Feed</h2>
-            <img src="/camera/video_feed" width="640" height="480"/>        </section>
+    <h2>Camera Feed</h2>
+    <img src="{{ url_for('camera.video_feed') }}"
+         width="640"
+         height="480"
+         style="border: 2px solid #333; background: black;" />
+</section>
     </main>
 
 </body>
