@@ -6,7 +6,6 @@ from fastapi.staticfiles import StaticFiles  # Fixed import
 from fastapi.templating import Jinja2Templates
 
 # Absolute imports from your services
-from app.services.api import router as api_router
 from app.services.camera import router as camera_router
 from app.services.calibration import router as calib_router
 from app.services.checkout_engine import router as checkout_router
