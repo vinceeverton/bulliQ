@@ -20,7 +20,6 @@ def get_camera():
 
 def camera_stream():
     global camera
-    frame = cv2.flip(frame, -1)
     if camera is None:
         camera = get_camera()
     if camera is None:
@@ -30,6 +29,7 @@ def camera_stream():
             frame_bytes = buffer.tobytes()
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+            frame = cv2.flip(frame, -1)
     else:
         while True:
             success, frame = camera.read()
