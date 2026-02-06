@@ -36,19 +36,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function getCheckout(score) {
     const overlay = document.getElementById("checkoutOverlay");
+    console.log("Checking score:", score); // Log to browser console
+
     try {
         const res = await fetch(`/api/checkout/${score}`);
         const data = await res.json();
 
         if (data.checkout) {
             overlay.innerText = data.checkout.join(" - ");
-            overlay.style.display = "block";
-            // Hide after 5 seconds
-            setTimeout(() => { overlay.style.display = "none"; }, 5000);
-        } else {
-            alert(data.message || "No checkout available");
+            
+            // FORCE VISIBILITY
+            overlay.style.setProperty('display', 'block', 'important');
+            console.log("Overlay should now be visible with text:", overlay.innerText);
+
+            setTimeout(() => {
+                overlay.style.display = "none";
+            }, 5000);
         }
-    } catch (error) {
-        console.error("Error fetching checkout:", error);
+    } catch (err) {
+        console.error("Fetch error:", err);
     }
 }
