@@ -40,7 +40,7 @@ CHECKOUTS = {
     2: ["D1"],
 }
 
-@api_bp.route("/api/checkout/<int:score>")
+@api_bp.route("/checkout/<int:score>")
 def checkout(score):
     if score < 2:
         return jsonify({

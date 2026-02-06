@@ -18,7 +18,7 @@ def create_app():
     app.register_blueprint(routes_bp) 
     app.register_blueprint(camera_bp)
     app.register_blueprint(calib_bp)
-    app.register_blueprint(api_bp)
+    app.register_blueprint(api_bp, url_prefix='/api')
     app.register_blueprint(checkout_bp)
     #app.register_blueprint(dashboard_bp)
     
