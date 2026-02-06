@@ -54,8 +54,7 @@ section {
     border-radius: 6px;
     font-size: 26px;
     font-weight: bold;
-    font-family: monospace;
-    display: none; /* Controlled by JS */
+    font-family: monospace; 
     box-shadow: 0 4px 15px rgba(0,0,0,0.5);
 }
 
