@@ -2,18 +2,20 @@ import uvicorn
 import psutil
 import os
 from fastapi import FastAPI, Request
-from fastapi.staticfiles import StaticFiles
+from fastapi.staticfiles import StaticFiles  # Fixed import
 from fastapi.templating import Jinja2Templates
 
-# Absolute imports
+# Absolute imports from your services
 from app.services.api import router as api_router
 from app.services.camera import router as camera_router
-from app.services.calibration import router as calib_router # Verified as 'router' in calibration.py
+from app.services.calibration import router as calib_router
 
 app = FastAPI()
 
-# Pathing setup
+# Get the absolute path to the 'app' directory
 CURRENT_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Mount Static and Templates correctly
 app.mount("/static", StaticFiles(directory=os.path.join(CURRENT_DIR, "static")), name="static")
 templates = Jinja2Templates(directory=os.path.join(CURRENT_DIR, "templates"))
 
@@ -36,6 +38,7 @@ async def index(request: Request):
         "ram": psutil.virtual_memory().percent,
         "temp": temp
     }
-    
-    # CRITICAL: This return statement connects your data to the HTML
     return templates.TemplateResponse("index.html", {"request": request, **health})
+
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=7000)
