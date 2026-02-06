@@ -5,49 +5,40 @@ from flask import Blueprint, Response
 
 camera_bp = Blueprint('camera', __name__)
 
-camera = 0  # global camera object
+camera = None
 
 def get_camera():
-    """Try to open camera 5 times"""
-    global camera
     attempts = 0
     while attempts < 5:
-        cam = cv2.VideoCapture(0)  # use /dev/video0
-        if cam.isOpened():
+        camera = cv2.VideoCapture(0)
+        if camera.isOpened():
             print("Camera opened successfully")
-            return cam
-        print(f"Camera not ready, attempt {attempts+1}/5")
+            return camera
         attempts += 1
         time.sleep(1)
-    print("Camera could not be opened, using blank feed")
     return None
 
 def camera_stream():
     global camera
     if camera is None:
         camera = get_camera()
-
-    while True:
-        if camera is None:
-            # Blank frame if camera fails
-            blank_frame = 255 * np.ones((480, 640, 3), dtype=np.uint8)
-            ret, buffer = cv2.imencode('.jpg', blank_frame)
+    if camera is None:
+        blank_frame = 255 * np.ones((480, 640, 3), dtype=np.uint8)
+        while True:
+            ret, buffer = cv2.imencode(".jpg", blank_frame)
             frame_bytes = buffer.tobytes()
-        else:
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+    else:
+        while True:
             success, frame = camera.read()
             if not success:
-                # Camera not ready, wait and yield blank
-                blank_frame = 255 * np.ones((480, 640, 3), dtype=np.uint8)
-                ret, buffer = cv2.imencode('.jpg', blank_frame)
-                frame_bytes = buffer.tobytes()
-            else:
-                # Flip the frame
-                frame = cv2.flip(frame, -1)
-                ret, buffer = cv2.imencode('.jpg', frame)
-                frame_bytes = buffer.tobytes()
-
-        yield (b'--frame\r\n'
-               b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+                time.sleep(0.1)
+                continue
+            ret, buffer = cv2.imencode(".jpg", frame)
+            frame_bytes = buffer.tobytes()
+            yield (b'--frame\r\n'
+                   b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
 
 @camera_bp.route('/video_feed')
 def video_feed():
