@@ -10,12 +10,12 @@ def create_app():
     # Import and register all blueprints
     from .routes import routes_bp
     from .camera import camera_bp
-    from .calibration import calib_bp
-    from .dashboard import dashboard_bp
+    #from .calibration import calib_bp
+    #from .dashboard import dashboard_bp
 
     app.register_blueprint(routes_bp) 
     app.register_blueprint(camera_bp)
-    app.register_blueprint(calib_bp)
-    app.register_blueprint(dashboard_bp)
+    #app.register_blueprint(calib_bp)
+    #app.register_blueprint(dashboard_bp)
 
     return app
