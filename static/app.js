@@ -8,18 +8,23 @@ async function getCheckout() {
   document.getElementById("result").innerText =
     data.route.join(" → ");
 }
-document.getElementById("calibrateBtn").onclick = async () => {
-  const response = await fetch("/calibrate", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      points: [{ x: 100, y: 100 }]
-    })
-  });
+document.addEventListener("DOMContentLoaded", () => {
+    const btn = document.getElementById("calibrateBtn");
+    if (!btn) return;
 
-  const result = await response.json();
-  alert(result.status);
-};
+    btn.onclick = async () => {
+        const response = await fetch("/calibrate", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                points: [{ x: 100, y: 100 }]
+            })
+        });
+
+        const result = await response.json();
+        alert(result.status);
+    };
+});
 function updateCheckout(score) {
     fetch(`/api/checkout/${score}`)
         .then(res => res.json())
