@@ -1,6 +1,5 @@
 from fastapi import APIRouter
-
-router = APIRouter(prefix="/api")
+router = APIRouter(prefix="/api") # This variable must be named 'router'
 
 CHECKOUTS = {
     170: ["T20", "T20", "Bull"],

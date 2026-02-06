@@ -1,65 +1,45 @@
-# BulliQ 🎯  
-**A darts performance, training, and checkout-intelligence platform**
+# BulliQ Dart Tracker 🎯
 
-BullIQ is a DartCounter-adjacent system designed to help darts players **win more legs**, not just record scores.
+An asynchronous dart tracking and checkout system built with **FastAPI** and **OpenCV**, optimized for the Raspberry Pi.
 
-It focuses on:
-- personalized checkout routes
-- pressure-based practice
-- deep but practical stats
-- optional one-camera assist scoring
+## 📁 Project Structure
 
-BullIQ does **not** integrate with or modify DartCounter.  
-It runs alongside any scoring app or can be used standalone.
+BulliQ/
+├── run.py               # Application launcher
+├── README.md            # Setup instructions
+├── requirements.txt      # Dependencies
+└── app/
+    ├── main.py          # FastAPI application & routing logic
+    ├── services/        # Logic modules (Camera, API, Calibration)
+    ├── static/          # CSS and JavaScript
+    └── templates/       # HTML Dashboard
+🛠️ Installation
 
-🔮 Roadmap
+git clone 
+cd bulliQ
 
-Phase 1 (Current)
-	•	Manual scoring
-	•	Checkout intelligence
-	•	Practice engine
-	•	Camera feed
+Setup Virtual Environment (Recommended for Pi)
+python -m venv venv
+source venv/bin/activate
 
-Phase 2
-	•	Full checkout table (170 → 2)
-	•	Dart tip detection
-	•	Calibration UI
-	•	Offline sync
+ Install Dependencies
+ pip install fastapi uvicorn psutil jinja2 numpy opencv-python-headless
 
-Phase 3
-	•	Team chemistry
-	•	League tools
-	•	OBS streaming overlays
-	•	Hardware buttons / pedals
+ 🚀 Running the App
+Start the server using the terminal:
 
-⸻
+python run.py
 
-🎯 Final Notes
+The dashboard will be available at: http://<your-pi-ip>:7000
 
-BullIQ is designed to:
-	•	run locally
-	•	scale cleanly
-	•	stay legal & league-friendly
-	•	complement DartCounter, not replace it
+⚙️ Features
+Asynchronous Video Streaming: High-performance camera feed using FastAPI's StreamingResponse.
+Intelligent Checkout API: Instant checkout suggestions based on your remaining score.
+System Health Monitor: Real-time tracking of Pi CPU, RAM, and Temperature.
+Calibration System: Save and load camera calibration settings via JSON.
 
-You can start practicing today and grow this into a serious product.
+📝 Troubleshooting
+Camera Busy: Ensure no other process (like a legacy Flask app) is using /dev/video0. Use sudo fuser -k /dev/video0 to clear it.
+Static Files 404: Ensure app/main.py correctly mounts the static directory using absolute paths.
 
-Good darts 🎯	
 
-_
-installation on Raspberry Pi
-** for documentation purposes im using a 3A+ **
-
-clone git repo
-
-cd into repo 
-
-create venv and activate
-
-install requirements.txt
-
-run python run.py
-
-visit http://raspberrypi.local:7000 
-
-—
