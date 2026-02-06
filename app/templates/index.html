@@ -20,12 +20,13 @@
             </ul>
         </section>
 
-        <section class="camera">
+       <section class="camera">
     <h2>Camera Feed</h2>
-    <img src="{{ url_for('camera.video_feed') }}"
-         width="640"
-         height="480"
-         style="border: 2px solid #333; background: black;" />
+
+    <div class="video-wrapper">
+        <img id="videoFeed" src="{{ url_for('camera.video_feed') }}" />
+        <div id="checkoutOverlay">Waiting for score…</div>
+    </div>
 </section>
 <button id="calibrateBtn">Calibrate</button>
 
