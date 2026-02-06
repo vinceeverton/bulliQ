@@ -32,16 +32,18 @@ function updateCheckout(score) {
             const overlay = document.getElementById("checkoutOverlay");
             if (!overlay) return;
 
-            if (data.checkout) {
-                overlay.innerText = `Checkout: ${data.checkout.join(" → ")}`;
-            } else {
-                overlay.innerText = data.message || "No checkout";
-            }
+if (data.route && Array.isArray(data.route)) {
+    checkoutOverlay.innerText = data.route.join(" → ");
+} else if (data.checkout) {
+    checkoutOverlay.innerText = data.checkout;
+} else {
+    checkoutOverlay.innerText = "—";
+}
         })
         .catch(() => {
             document.getElementById("checkoutOverlay").innerText = "Error";
         });
-}
+      }
 
 // TEMP TEST — replace later with real score detection
 setInterval(() => {
