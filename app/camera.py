@@ -29,13 +29,15 @@ def camera_stream():
             frame_bytes = buffer.tobytes()
             yield (b'--frame\r\n'
                    b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
-            frame = cv2.flip(frame, -1)
     else:
         while True:
             success, frame = camera.read()
             if not success:
                 time.sleep(0.1)
                 continue
+            
+            frame = cv2.flip(frame, -1)
+
             ret, buffer = cv2.imencode(".jpg", frame)
             frame_bytes = buffer.tobytes()
             yield (b'--frame\r\n'
