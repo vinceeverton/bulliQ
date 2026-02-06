@@ -1,14 +1,28 @@
-from flask import Blueprint, jsonify
+from fastapi import APIRouter
 
-checkout_bp = Blueprint('checkout', __name__)
+# This creates the router that main.py will use
+router = APIRouter(prefix="/api")
 
-@checkout_bp.route('/app/checkout_engine/<int:score>')
-def checkout(score):
-    # TEMP real logic placeholder
+def get_dart_logic(score: int):
+    """The actual math logic moved here"""
     if score > 170 or score < 2:
-        return jsonify({"checkout": None})
+        return {"score": score, "checkout": None, "message": "No finish possible"}
 
-    return jsonify({
-        "score": score,
-        "checkout": f"D{score // 2}" if score % 2 == 0 else "No out"
-    })
+    # Your logic: If even, suggest a Double. If odd, no standard out.
+    if score % 2 == 0:
+        return {
+            "score": score, 
+            "checkout": [f"D{score // 2}"],
+            "message": "Finish found"
+        }
+    
+    return {
+        "score": score, 
+        "checkout": None, 
+        "message": "No standard out"
+    }
+
+@router.get("/checkout/{score}")
+async def checkout_api(score: int):
+    # This endpoint calls the logic function above
+    return get_dart_logic(score)

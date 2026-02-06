@@ -9,6 +9,7 @@ from fastapi.templating import Jinja2Templates
 from app.services.api import router as api_router
 from app.services.camera import router as camera_router
 from app.services.calibration import router as calib_router
+from app.services.checkout_engine import router as checkout_router
 
 app = FastAPI()
 
@@ -23,6 +24,7 @@ templates = Jinja2Templates(directory=os.path.join(CURRENT_DIR, "templates"))
 app.include_router(api_router)
 app.include_router(camera_router)
 app.include_router(calib_router)
+app.include_router(checkout_router)
 
 @app.get("/")
 async def index(request: Request):
