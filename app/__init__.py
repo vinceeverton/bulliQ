@@ -14,7 +14,7 @@ def create_app():
     #from .dashboard import dashboard_bp
 
     app.register_blueprint(routes_bp) 
-    app.register_blueprint(camera_bp, url_prefix='/camera')
+    app.register_blueprint(camera_bp)
     #app.register_blueprint(calib_bp, url_prefix='/calibration')
     #app.register_blueprint(dashboard_bp, url_prefix='/dashboard')
 
