@@ -1,28 +1,30 @@
 from fastapi import APIRouter
 
-# This creates the router that main.py will use
-router = APIRouter(prefix="/api")
+router = APIRouter()
 
-def get_dart_logic(score: int):
-    """The actual math logic moved here"""
-    if score > 170 or score < 2:
-        return {"score": score, "checkout": None, "message": "No finish possible"}
+# The full checkout table
+CHECKOUTS = {
+    170: ["T20", "T20", "Bull"],
+    167: ["T20", "T19", "Bull"],
+    160: ["T20", "T20", "D20"],
+    120: ["T20", "20", "D20"],
+    100: ["T20", "D20"],
+    60: ["20", "D20"],
+    50: ["Bull"],
+    40: ["D20"],
+    32: ["D16"]
+}
 
-    # Your logic: If even, suggest a Double. If odd, no standard out.
-    if score % 2 == 0:
+@router.get("/api/checkout/{score}")
+async def checkout(score: int):
+    if score in CHECKOUTS:
         return {
-            "score": score, 
-            "checkout": [f"D{score // 2}"],
-            "message": "Finish found"
+            "score": score,
+            "checkout": CHECKOUTS[score] # Returns the list: ["T20", "T20", "Bull"]
         }
     
-    return {
-        "score": score, 
-        "checkout": None, 
-        "message": "No standard out"
-    }
+    # Fallback for even numbers not in the list
+    if 2 <= score <= 40 and score % 2 == 0:
+        return {"score": score, "checkout": [f"D{score // 2}"]}
 
-@router.get("/checkout/{score}")
-async def checkout_api(score: int):
-    # This endpoint calls the logic function above
-    return get_dart_logic(score)
+    return {"score": score, "checkout": None, "message": "No standard checkout"}
