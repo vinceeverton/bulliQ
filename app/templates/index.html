@@ -11,6 +11,7 @@
     </header>
 
     <main>
+        <!-- System Health stays at the top -->
         <section class="stats">
             <h2>System Health</h2>
             <ul>
@@ -20,21 +21,24 @@
             </ul>
         </section>
 
-<section class="calibrate">
-    <h2>Calibration</h2>
-    <button id="calibrateBtn">Calibrate Camera</button> 
-   </section>
+        <!-- NEW: Game Controls Section (Input + Buttons) -->
+        <section class="controls">
+            <h2>Game Controls</h2>
+            <div class="control-group">
+                <input type="number" id="scoreInput" placeholder="Enter Score (e.g. 170)" min="2" max="501">
+                <button id="checkoutBtn">Get Checkout</button>
+            </div>
+            <!-- Calibrate button moved here for a cleaner look -->
+            <button id="calibrateBtn" style="margin-top: 10px;">Calibrate Camera</button>
+        </section>
 
-<section class="camera">
-    <h2>Camera Feed</h2>
-
- <div class="camera-wrapper">
-    <img src="{{ url_for('video_feed') }}" width="640" height="480">
-    <div id="checkoutOverlay" class="checkoutOverlay" style="display: none;"></div>
-</div>
-
-</section>
+        <!-- UPDATED: Camera Feed Section -->
+        <section class="camera">
+            <h2>Camera Feed</h2>
+            <div class="camera-wrapper">
+                <img src="{{ url_for('video_feed') }}" width="640" height="480">
+                <!-- JavaScript will inject text here -->
+                <div id="checkoutOverlay" class="checkoutOverlay" style="display: none;"></div>
+            </div>
+        </section>
     </main>
-  <script src="{{ url_for('static', path='app.js') }}"></script>
-</body>
-</html>
