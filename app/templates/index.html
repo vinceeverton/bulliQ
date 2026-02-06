@@ -1,1 +1,38 @@
-<img src="{{ url_for('camera.video_feed') }}" width="640" height="480">
+<!DOCTYPE html>
+<html>
+<head>
+  <title>BullIQ</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+  <h1>🎯 BullIQ</h1>
+
+<<img src="{{ url_for('camera.video_feed') }}" width="640" height="480">
+  <p id="status">Click bull center</p>
+
+  <div class="panel">
+    <input type="number" id="remaining" placeholder="Remaining score">
+    <button onclick="getCheckout()">Checkout</button>
+  </div>
+  <div id="result"></div>
+
+  <script src="/static/app.js"></script>
+  <script>
+    let step = 0;
+    document.getElementById("video").addEventListener("click", function(e){
+      const rect = this.getBoundingClientRect();
+      const x = Math.round(e.clientX - rect.left);
+      const y = Math.round(e.clientY - rect.top);
+
+      fetch("/calibrate", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({x, y})
+      });
+      step++;
+      document.getElementById("status").innerText =
+        step === 1 ? "Click a point on the double ring" : "Calibration saved";
+    });
+  </script>
+</body>
+</html>
